@@ -26,6 +26,9 @@ func main() {
 
 	// TODO: drを使ったユースケース（今回作成するAPIの処理)を記載
 
+	// URLのルーティングの設定
+	r := route.NewInitRoute(dr)
+
 	defer func() {
 		// 指定した環境変数が存在しない場合
 		if cErr != nil {

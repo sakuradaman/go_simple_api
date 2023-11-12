@@ -1,4 +1,5 @@
 package repository
 
-type Drama interface {
+type DramaRepository interface {
+	SelectAllDramas()
 }
