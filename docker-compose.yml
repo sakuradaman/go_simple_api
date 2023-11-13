@@ -4,7 +4,7 @@ services:
     container_name: app
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./build/docker/app/Dockerfile
     ports:
       - "3000:3000"
     env_file:
@@ -14,12 +14,19 @@ services:
       - mysql
 
   mysql:
+    build:
+      context: .
+      dockerfile: ./build/docker/mysql/Dockerfile.mysql
     container_name: mysql
-    image: mysql:8.0
+    # image: mysql:8.0 <- dockerfileで設定
     # 異常終了時に自動で再起動する
     restart: always
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      # db作成
+      - ./build/docker/mysql/init:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
+      MYSQL_DATABASE: dramas
     

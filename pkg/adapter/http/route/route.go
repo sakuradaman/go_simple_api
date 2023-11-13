@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	handler "github.com/sakuradaman/go_simple_api/pkg/adapter/http/handler"
 	"github.com/sakuradaman/go_simple_api/pkg/lib/config"
 	"golang.org/x/xerrors"
 )
@@ -14,10 +15,11 @@ type Route interface {
 }
 
 type InitRoute struct {
+	Mh handler.DramaHandler
 }
 
-func NewInitRoute() Route {
-	InitRoute := InitRoute{}
+func NewInitRoute(mh handler.DramaHandler) Route {
+	InitRoute := InitRoute{mh}
 	return &InitRoute
 }
 
@@ -48,9 +50,10 @@ func (i *InitRoute) InitRouting(cfg *config.Config) (*echo.Echo, error) {
 	e.GET("/healthcheck", func(c echo.Context) error {
 		return c.String(200, "OK")
 	})
-	e.GET("/drama")
+	// TODO: ルーティングを増やす場合、グループ化する
+	e.GET("/drama", i.Mh.SelectAllDramas())
 
-	// Start Server
+	// サーバーの起動
 	if err := e.Start(fmt.Sprintf(":%s", cfg.Port)); err != nil {
 		return nil, xerrors.Errorf("fail to start port:%s %w", cfg.Port, err)
 	}

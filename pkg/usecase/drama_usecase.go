@@ -1,14 +1,31 @@
 package usecase
 
-// インターフェースを定義(使用するメソッドを定義)
-type Drama interface {
-	FindAllDramas()
+import (
+	"context"
+
+	"github.com/sakuradaman/go_simple_api/pkg/domain/model"
+	"github.com/sakuradaman/go_simple_api/pkg/domain/service"
+)
+
+type DramaUsecase interface {
+	SelectAllDramas(ctx context.Context) ([]*model.Drama, error)
 }
 
-// 上記のインターフェースを用いて構造体を定義
-type DramaUsecase struct {
+type dramaUsecase struct {
+	svc service.DramaService
 }
 
-func (du *DramaUsecase) FindAllDramas() {
+// serviceインターフェースからusecaseインターフェースを作成
+func NewDramaUsecase(ds service.DramaService) DramaUsecase {
+	return &dramaUsecase{
+		svc: ds,
+	}
+}
 
+func (du *dramaUsecase) SelectAllDramas(ctx context.Context) ([]*model.Drama, error) {
+	mDrama, err := du.svc.SelectAllDramas(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return mDrama, nil
 }

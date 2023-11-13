@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-
 	"golang.org/x/exp/slog"
 
+	handler "github.com/sakuradaman/go_simple_api/pkg/adapter/http/handler"
+	"github.com/sakuradaman/go_simple_api/pkg/adapter/http/route"
 	"github.com/sakuradaman/go_simple_api/pkg/infra"
 	"github.com/sakuradaman/go_simple_api/pkg/lib/config"
 )
@@ -20,14 +20,17 @@ func main() {
 	if err != nil {
 		slog.Error("initDb err: %w", err)
 	}
-	// DBの構造体を定義
+	// DBインターフェース
 	dr := infra.NewDramaRepository(db)
-	fmt.Println(dr, "debug")
+	// handlerインターフェース
+	mh := handler.NewDramaHandler(dr)
 
-	// TODO: drを使ったユースケース（今回作成するAPIの処理)を記載
-
-	// URLのルーティングの設定
-	r := route.NewInitRoute(dr)
+	// URLのルーティング設定
+	r := route.NewInitRoute(mh)
+	_, err = r.InitRouting(c)
+	if err != nil {
+		slog.Error("InitRouting at NewInitRoute err: %w", err)
+	}
 
 	defer func() {
 		// 指定した環境変数が存在しない場合
