@@ -1,4 +1,4 @@
-USE `drama` ;
+USE `dramas` ;
 
 SET CHARSET utf8mb4;
 

@@ -8,6 +8,7 @@ up:
 # 上記で作成したイメージを元にコンテナを起動する
 	docker-compose up -d
 migrate:
-	docker-compose exec app -dir /db/migration mysql "root:user@tcp(mysql:3306)/dramas" up
+	migrate -path build/db/migration/ddl/ -database 'mysql://root:@tcp(localhost:3306)/dramas?parseTime=true&loc=Local' up
+# TODO: 以下が動かない所から確認
 start:
 	docker-compose exec app go run /cmd/main.go

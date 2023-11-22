@@ -21,6 +21,7 @@ services:
     # image: mysql:8.0 <- dockerfileで設定
     # 異常終了時に自動で再起動する
     restart: always
+    platform: linux/x86_64 # for M1 mac user
     ports:
       - "3306:3306"
     volumes:
