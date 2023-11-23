@@ -19,8 +19,8 @@ func NewDramaRepository(db *gorm.DB) repository.DramaRepository {
 
 func (r *dramaRepository) SelectAllDramas(ctx context.Context) ([]*model.Drama, error) {
 	var records []*model.Drama
-	if result := r.db.Find(records); result.Error != nil {
-		return nil, xerrors.Errorf("repository  GetTodos() err %w", result.Error)
+	if result := r.db.Find(&records); result.Error != nil {
+		return nil, xerrors.Errorf("Find err %w", result.Error)
 	}
 	return records, nil
 }

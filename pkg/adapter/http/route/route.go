@@ -47,8 +47,12 @@ func (i *InitRoute) InitRouting(cfg *config.Config) (*echo.Echo, error) {
 	}
 
 	// ルーティングの設定
+	e.GET("/", func(c echo.Context) error {
+		return c.String(200, "Hello! Please access /drama")
+	})
+
 	e.GET("/healthcheck", func(c echo.Context) error {
-		return c.String(200, "OK")
+		return c.String(200, "Health Check is OK")
 	})
 	// TODO: ルーティングを増やす場合、グループ化する
 	e.GET("/drama", i.Mh.SelectAllDramas())
