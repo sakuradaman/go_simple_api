@@ -7,3 +7,11 @@ $ make run-db
 $ make db-migrate
 $ make run-server
 ```
+
+# how to check them
+```shell
+$ curl http://localhost:3000/healthcheck
+-> Health Check is OK% 
+$ curl http://localhost:3000/drama
+-> You can get some data! 
+```
